@@ -23,7 +23,7 @@ export function Home({ navigate }) {
       <div className="keys-row" aria-label="Прогресс ключей">
         {games.map((game) => (
           <span key={game.id} className={`key-chip ${progress[game.id] ? 'is-open' : ''}`}>
-            {progress[game.id] || '✦'}
+            {progress[`letter${game.number}`] || (progress[game.id] === true ? game.letter : progress[game.id]) || '✦'}
           </span>
         ))}
       </div>
