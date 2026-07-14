@@ -27,7 +27,7 @@ const victoryTexts = {
 export function GamePage({ gameNumber, navigate }) {
   const game = games.find((item) => item.number === gameNumber);
   const [progress, setProgress] = useState(getProgress);
-  const [victoryLetter, setVictoryLetter] = useState(null);
+  const [victory, setVictory] = useState(null);
 
   if (!game) {
     return (
@@ -41,13 +41,17 @@ export function GamePage({ gameNumber, navigate }) {
   const CurrentGame = gameComponents[game.component];
   const completed = isGameCompleted(game.id, progress);
 
-  const completeGame = (letter) => {
+  const completeGame = (letter, modal = {}) => {
     const nextProgress = saveLetter(game.id, letter);
     setProgress(nextProgress);
-    setVictoryLetter(letter);
+    setVictory({ letter, ...modal });
   };
 
   const goNext = () => {
+    if (victory) {
+      localStorage.setItem(game.id, 'true');
+      localStorage.setItem(`letter${game.number}`, victory.letter);
+    }
     const nextGame = games.find((item) => !nextProgressHas(item.id));
     navigate(nextGame ? nextGame.path : '/final');
   };
