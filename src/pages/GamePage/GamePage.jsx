@@ -11,6 +11,19 @@ import { getProgress, isGameCompleted, saveLetter } from '../../progress';
 
 const gameComponents = { ThreadsGame, FlowerGame, CatsGame, CrystalGame };
 
+const victoryTexts = {
+  game3: {
+    title: 'Третий ключ найден',
+    text: `Все пушистые друзья дома.
+Остался последний шаг.`,
+  },
+  game4: {
+    title: 'Все ключи найдены',
+    text: `Четыре испытания пройдены.
+Четыре ключа у тебя в руках.`,
+  },
+};
+
 export function GamePage({ gameNumber, navigate }) {
   const game = games.find((item) => item.number === gameNumber);
   const [progress, setProgress] = useState(getProgress);
@@ -50,11 +63,11 @@ export function GamePage({ gameNumber, navigate }) {
       <GameHeader game={game} completed={completed} />
       <CurrentGame game={game} onComplete={completeGame} />
       <Button variant="ghost" onClick={() => navigate('/')}>Вернуться на главную</Button>
-      {victory && (
+      {victoryLetter && (
         <VictoryModal
-          letter={victory.letter}
-          title={victory.title}
-          text={victory.text}
+          letter={victoryLetter}
+          title={victoryTexts[game.id]?.title}
+          text={victoryTexts[game.id]?.text}
           onNext={goNext}
           nextLabel={game.number === 4 ? 'К финалу' : 'К следующему ключу'}
         />
