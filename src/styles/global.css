@@ -110,3 +110,99 @@ p { color: var(--muted); line-height: 1.65; }
   .page-card, .game-card, .victory-modal, .game-header, .game-page { width: min(100%, 520px); }
   .page-card { padding: 44px 36px; }
 }
+
+.threads-game, .flower-game { position: relative; overflow: hidden; touch-action: none; }
+.threads-status, .flower-score {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 40px;
+  margin: 8px 0 14px;
+  padding: 8px 14px;
+  border-radius: 999px;
+  color: #211934;
+  background: linear-gradient(135deg, rgba(200,182,232,0.95), rgba(216,180,106,0.9));
+  font-weight: 900;
+}
+.threads-board {
+  width: 100%;
+  aspect-ratio: 1;
+  border-radius: 28px;
+  background:
+    radial-gradient(circle at 20% 22%, rgba(216,180,106,0.16), transparent 24%),
+    radial-gradient(circle at 80% 72%, rgba(79,165,138,0.18), transparent 26%),
+    rgba(248,243,255,0.06);
+  border: 1px solid rgba(200,182,232,0.24);
+  box-shadow: inset 0 0 32px rgba(20,15,31,0.26);
+  user-select: none;
+}
+.thread-line line {
+  stroke: var(--thread);
+  stroke-width: 2.5;
+  stroke-linecap: round;
+  filter: drop-shadow(0 0 7px color-mix(in srgb, var(--thread), transparent 40%));
+  transition: stroke-width 420ms ease, filter 420ms ease;
+}
+.thread-handle {
+  cursor: grab;
+  stroke: rgba(255,255,255,0.9);
+  stroke-width: 1.3;
+  filter: drop-shadow(0 6px 8px rgba(20,15,31,0.35));
+}
+.thread-handle:active { cursor: grabbing; }
+.threads-game.is-won .thread-line line { stroke-width: 3.2; filter: url(#threadGlow); animation: threadStraighten 900ms ease both; }
+.celebration-particles, .petals { position: absolute; inset: 0; pointer-events: none; overflow: hidden; }
+.celebration-particles span {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--gold);
+  animation: particle 1.9s ease-out infinite;
+  transform: rotate(calc(var(--i) * 20deg)) translateY(-12px);
+}
+
+.flower-board {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: 7px;
+  margin-top: 16px;
+  padding: 10px;
+  border-radius: 26px;
+  background: rgba(248,243,255,0.06);
+  border: 1px solid rgba(200,182,232,0.22);
+}
+.flower-cell {
+  display: grid;
+  place-items: center;
+  min-width: 0;
+  aspect-ratio: 1;
+  border: 1px solid rgba(200,182,232,0.2);
+  border-radius: 16px;
+  background: linear-gradient(160deg, rgba(200,182,232,0.16), rgba(79,165,138,0.12));
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.1), 0 8px 18px rgba(20,15,31,0.18);
+  font-size: clamp(1.35rem, 7vw, 2rem);
+  cursor: pointer;
+  transition: transform 160ms ease, border-color 160ms ease, background 160ms ease, opacity 280ms ease;
+}
+.flower-cell:active, .flower-cell.is-selected { transform: scale(0.93); border-color: var(--gold); background: rgba(216,180,106,0.22); }
+.flower-cell.is-matched { opacity: 0; transform: scale(0.35) rotate(18deg); }
+.flower-game.is-won .flower-board { animation: goldenPulse 900ms ease both; }
+.bouquet { position: absolute; inset: auto 0 18px; margin: auto; font-size: 4rem; animation: bouquetPop 900ms ease both; }
+.petals span {
+  position: absolute;
+  left: calc(8% + (var(--i) * 4.4%));
+  top: -24px;
+  color: #f1d99c;
+  animation: petalFall 2.2s ease-in infinite;
+  animation-delay: calc(var(--i) * 90ms);
+}
+.victory-modal h2 { margin: 8px 0 6px; font-size: clamp(1.8rem, 9vw, 2.7rem); line-height: 1; }
+.victory-modal p { white-space: pre-line; }
+
+@keyframes threadStraighten { 50% { stroke-dasharray: 6 3; } 100% { stroke-dasharray: 100 0; } }
+@keyframes goldenPulse { 50% { box-shadow: 0 0 34px rgba(216,180,106,0.45); } 100% { box-shadow: 0 0 24px rgba(216,180,106,0.28); } }
+@keyframes bouquetPop { from { opacity: 0; transform: translateY(28px) scale(0.5); } to { opacity: 1; transform: translateY(0) scale(1); } }
+@keyframes petalFall { to { transform: translateY(520px) rotate(240deg); opacity: 0; } }

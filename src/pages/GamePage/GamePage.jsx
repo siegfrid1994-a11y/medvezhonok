@@ -14,7 +14,7 @@ const gameComponents = { ThreadsGame, FlowerGame, CatsGame, CrystalGame };
 export function GamePage({ gameNumber, navigate }) {
   const game = games.find((item) => item.number === gameNumber);
   const [progress, setProgress] = useState(getProgress);
-  const [victoryLetter, setVictoryLetter] = useState(null);
+  const [victory, setVictory] = useState(null);
 
   if (!game) {
     return (
@@ -28,13 +28,17 @@ export function GamePage({ gameNumber, navigate }) {
   const CurrentGame = gameComponents[game.component];
   const completed = isGameCompleted(game.id, progress);
 
-  const completeGame = (letter) => {
+  const completeGame = (letter, modal = {}) => {
     const nextProgress = saveLetter(game.id, letter);
     setProgress(nextProgress);
-    setVictoryLetter(letter);
+    setVictory({ letter, ...modal });
   };
 
   const goNext = () => {
+    if (victory) {
+      localStorage.setItem(game.id, 'true');
+      localStorage.setItem(`letter${game.number}`, victory.letter);
+    }
     const nextGame = games.find((item) => !nextProgressHas(item.id));
     navigate(nextGame ? nextGame.path : '/final');
   };
@@ -46,7 +50,15 @@ export function GamePage({ gameNumber, navigate }) {
       <GameHeader game={game} completed={completed} />
       <CurrentGame game={game} onComplete={completeGame} />
       <Button variant="ghost" onClick={() => navigate('/')}>Вернуться на главную</Button>
-      {victoryLetter && <VictoryModal letter={victoryLetter} onNext={goNext} nextLabel={game.number === 4 ? 'К финалу' : 'К следующему ключу'} />}
+      {victory && (
+        <VictoryModal
+          letter={victory.letter}
+          title={victory.title}
+          text={victory.text}
+          onNext={goNext}
+          nextLabel={game.number === 4 ? 'К финалу' : 'К следующему ключу'}
+        />
+      )}
     </div>
   );
 }

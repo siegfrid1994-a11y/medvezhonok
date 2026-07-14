@@ -1,6 +1,6 @@
 import { Button } from '../Button/Button';
 
-export function VictoryModal({ letter, onNext, nextLabel = 'Продолжить' }) {
+export function VictoryModal({ letter, title = 'Ключ найден', text = 'Эта буква сохранена. Ещё один шаг — и тайна станет ближе.', onNext, nextLabel = 'Продолжить' }) {
   return (
     <div className="modal-backdrop" role="dialog" aria-modal="true" aria-label="Ключ найден">
       <div className="victory-modal fade-up">
@@ -10,8 +10,9 @@ export function VictoryModal({ letter, onNext, nextLabel = 'Продолжить
           ))}
         </div>
         <p className="eyebrow">Ключ найден</p>
+        <h2>{title}</h2>
         <div className="victory-letter glow">{letter}</div>
-        <p>Эта буква сохранена. Ещё один шаг — и тайна станет ближе.</p>
+        <p>{text}</p>
         <Button onClick={onNext}>{nextLabel}</Button>
       </div>
     </div>
